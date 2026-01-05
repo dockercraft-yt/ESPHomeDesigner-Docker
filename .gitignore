@@ -7,7 +7,7 @@
 /assets/jsconfig.json
 hugo_stats.json
 
-/src/data/
+Docker/src/data/
 
 recode_default_conf.ps1
 
