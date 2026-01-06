@@ -135,3 +135,37 @@ Notable runtime details (what changed)
 
 These notes are intended to help contributors and operators understand the
 runtime behavior without digging through the entrypoint and nginx files.
+
+**Remote Image (downloads frontend at startup)**
+
+- **Purpose**: The remote variant downloads the frontend assets from the
+	public GitHub repo at container start, extracts them, and populates
+	nginx's webroot. This avoids bundling the UI into the image at build
+	time and is useful for CI-free deployments or quick testing of the
+	upstream repository.
+- **Files**: See [Docker/remote_Dockerfile](Docker/remote_Dockerfile) and
+	[Docker/remote_entrypoint.sh](Docker/remote_entrypoint.sh).
+- **Preferred source path**: the entrypoint prefers
+	`custom_components/reterminal_dashboard/frontend` inside the repo ZIP and
+	falls back to `Docker/src/data` when the preferred path isn't present.
+
+Build and run the remote image:
+
+```bash
+docker build -t esphome-designer-remote -f Docker/remote_Dockerfile .
+docker run --rm -p 8080:80 -p 8443:443 esphome-designer-remote
+```
+
+
+**Environment variables for TLS & entrypoint**
+
+- **CERT_AUTOGEN**: `1` (default) — auto-generate a self-signed cert when
+	no certs are present; set to `0` or `false` to disable auto-generation.
+
+Mount your own TLS files into `/etc/nginx/ssl/server.crt` and
+`/etc/nginx/ssl/server.key` to use production certs; the entrypoint will
+not overwrite mounted files.
+
+If you want these docs moved into a short `docs/` file or expanded with
+examples for generating SAN certs on various platforms, tell me and I
+will add it.

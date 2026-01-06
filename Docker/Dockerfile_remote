@@ -1,0 +1,17 @@
+FROM nginx:latest
+
+COPY Docker/src/nginx/default.conf /etc/nginx/conf.d/default.conf
+# Remote build variant: on container start download site assets from the
+# public GitHub repository, extract them and populate nginx webroot.
+
+# Install tools needed at runtime to download, extract and generate certs
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends curl unzip ca-certificates openssl \
+  && rm -rf /var/lib/apt/lists/*
+
+# Add entrypoint that will fetch and install remote assets at startup
+COPY Docker/entrypoint_remote.sh /remote_entrypoint.sh
+RUN chmod +x /remote_entrypoint.sh
+
+ENTRYPOINT ["/remote_entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
