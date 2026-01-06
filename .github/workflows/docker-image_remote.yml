@@ -23,4 +23,4 @@ jobs:
         context: .
         file: ./Docker/Dockerfile_remote
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/ESPHome-Designer:latest
+        tags: ghcr.io/${{ github.repository_owner }}/esphome-designer:latest
