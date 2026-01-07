@@ -6,3 +6,6 @@ services:
     ports:
       - 8080:80
       - 8443:443
+    environment:
+      - TZ=Europe/Berlin
+      #- CERT_AUTOGEN=0 #Optional, uncomment to disable automatic certificate generation
