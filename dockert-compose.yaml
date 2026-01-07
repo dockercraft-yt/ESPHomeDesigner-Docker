@@ -1,0 +1,8 @@
+services:
+  esphome-designer-docker:
+    image: ghcr.io/dockercraft-yt/esphome-designer-docker:latest
+    container_name: esphome-designer-docker
+    restart: unless-stopped
+    ports:
+      - 8080:80
+      - 8443:443
