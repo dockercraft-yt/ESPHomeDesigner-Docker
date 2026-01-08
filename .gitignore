@@ -11,6 +11,9 @@ Docker/src/data/
 
 recode_default_conf.ps1
 
+
+.github/workflows/docker-image_remote.yml
+
 # Executable may be added to repository
 hugo.exe
 hugo.darwin
