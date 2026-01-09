@@ -11,7 +11,7 @@ Docker/src/data/
 
 recode_default_conf.ps1
 
-
+workflow*
 .github/*
 
 # Executable may be added to repository

@@ -1,0 +1,18 @@
+FROM nginx:alpine
+
+# Nginx config
+COPY src/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Runtime tools für Remote-Assets & Zertifikate
+RUN apk add --no-cache \
+    curl \
+    unzip \
+    ca-certificates \
+    openssl
+
+# Entrypoint
+COPY entrypoint_remote.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

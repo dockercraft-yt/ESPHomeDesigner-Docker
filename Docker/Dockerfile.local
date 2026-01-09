@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:alpine
 
 # Copy site source into a safe location in the image. At container start an
 # entrypoint script will copy these files into nginx's webroot. This allows
@@ -14,13 +14,15 @@ COPY src/nginx/default.conf /etc/nginx/conf.d/default.conf
 # When building with the Docker context (recommended):
 #   docker build -t esphome-designer Docker
 # the paths below resolve to Docker/src/ and Docker/entrypoint.sh
-COPY entrypoint.sh /entrypoint.sh
+COPY /entrypoint_local.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Install openssl so the entrypoint can generate a self-signed certificate at runtime
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends openssl ca-certificates \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+    curl \
+    unzip \
+    ca-certificates \
+    openssl
 
 ENTRYPOINT ["/entrypoint.sh"]
 # Default command: run nginx in foreground
